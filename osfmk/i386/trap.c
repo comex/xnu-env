@@ -471,7 +471,7 @@ static inline void
 reset_dr7(void)
 {
 	long dr7 = 0x400; /* magic dr7 reset value; 32 bit on i386, 64 bit on x86_64 */
-	__asm__ volatile("mov %0,%%dr7" : : "r" (dr7));
+	noasm("mov %0,%%dr7" : : "r" (dr7));
 }
 #if MACH_KDP
 unsigned kdp_has_active_watchpoints = 0;
@@ -1254,7 +1254,7 @@ user_trap(
 				 * used on x86_64
 				 */
 				unsigned long dr6_temp; /* 32 bit for i386, 64 bit for x86_64 */
-				__asm__ volatile ("mov %%db6, %0" : "=r" (dr6_temp)); /* Register constraint by necessity */
+				noasm ("mov %%db6, %0" : "=r" (dr6_temp)); /* Register constraint by necessity */
 				if (thread_is_64bit(thread)) {
 					x86_debug_state64_t *ids = pcb->ids;
 					ids->dr6 = dr6_temp;
@@ -1262,7 +1262,7 @@ user_trap(
 					x86_debug_state32_t *ids = pcb->ids;
 					ids->dr6 = (uint32_t) dr6_temp;
 				}
-				__asm__ volatile ("mov %0, %%db6" : : "r" (clear));
+				noasm ("mov %0, %%db6" : : "r" (clear));
 			}
 			exc = EXC_BREAKPOINT;
 			code = EXC_I386_SGL;
@@ -1475,7 +1475,7 @@ kernel_preempt_check(void)
 		/*
 		 * now cause the PRE-EMPTION trap
 		 */
-		__asm__ volatile ("     int     $0xff");
+		noasm ("     int     $0xff");
 	} else {
 		/*
 		 * if interrupts were already disabled or
@@ -1574,24 +1574,24 @@ sync_iss_to_iks(x86_saved_state_t *saved_state)
 	if (record_active_regs == TRUE) {
 #ifdef __i386__
 		/* Show the trap handler path */
-		__asm__ volatile("movl %%ebx, %0" : "=m" (iks->k_ebx));
-		__asm__ volatile("movl %%esp, %0" : "=m" (iks->k_esp));
-		__asm__ volatile("movl %%ebp, %0" : "=m" (iks->k_ebp));
-		__asm__ volatile("movl %%edi, %0" : "=m" (iks->k_edi));
-		__asm__ volatile("movl %%esi, %0" : "=m" (iks->k_esi));
+		noasm("movl %%ebx, %0" : "=m" (iks->k_ebx));
+		noasm("movl %%esp, %0" : "=m" (iks->k_esp));
+		noasm("movl %%ebp, %0" : "=m" (iks->k_ebp));
+		noasm("movl %%edi, %0" : "=m" (iks->k_edi));
+		noasm("movl %%esi, %0" : "=m" (iks->k_esi));
 		/* "Current" instruction pointer */
-		__asm__ volatile("movl $1f, %0\n1:" : "=m" (iks->k_eip));
+		noasm("movl $1f, %0\n1:" : "=m" (iks->k_eip));
 #else
 		/* Show the trap handler path */
-		__asm__ volatile("movq %%rbx, %0" : "=m" (iks->k_rbx));
-		__asm__ volatile("movq %%rsp, %0" : "=m" (iks->k_rsp));
-		__asm__ volatile("movq %%rbp, %0" : "=m" (iks->k_rbp));
-		__asm__ volatile("movq %%r12, %0" : "=m" (iks->k_r12));
-		__asm__ volatile("movq %%r13, %0" : "=m" (iks->k_r13));
-		__asm__ volatile("movq %%r14, %0" : "=m" (iks->k_r14));
-		__asm__ volatile("movq %%r15, %0" : "=m" (iks->k_r15));
+		noasm("movq %%rbx, %0" : "=m" (iks->k_rbx));
+		noasm("movq %%rsp, %0" : "=m" (iks->k_rsp));
+		noasm("movq %%rbp, %0" : "=m" (iks->k_rbp));
+		noasm("movq %%r12, %0" : "=m" (iks->k_r12));
+		noasm("movq %%r13, %0" : "=m" (iks->k_r13));
+		noasm("movq %%r14, %0" : "=m" (iks->k_r14));
+		noasm("movq %%r15, %0" : "=m" (iks->k_r15));
 		/* "Current" instruction pointer */
-		__asm__ volatile("leaq 1f(%%rip), %%rax; mov %%rax, %0\n1:"
+		noasm("leaq 1f(%%rip), %%rax; mov %%rax, %0\n1:"
 				 : "=m" (iks->k_rip)
 				 :
 				 : "rax");
@@ -1614,24 +1614,24 @@ sync_iss_to_iks_unconditionally(__unused x86_saved_state_t *saved_state) {
 		iks = STACK_IKS(kstack);
 #ifdef __i386__
 		/* Display the trap handler path */
-		__asm__ volatile("movl %%ebx, %0" : "=m" (iks->k_ebx));
-		__asm__ volatile("movl %%esp, %0" : "=m" (iks->k_esp));
-		__asm__ volatile("movl %%ebp, %0" : "=m" (iks->k_ebp));
-		__asm__ volatile("movl %%edi, %0" : "=m" (iks->k_edi));
-		__asm__ volatile("movl %%esi, %0" : "=m" (iks->k_esi));
+		noasm("movl %%ebx, %0" : "=m" (iks->k_ebx));
+		noasm("movl %%esp, %0" : "=m" (iks->k_esp));
+		noasm("movl %%ebp, %0" : "=m" (iks->k_ebp));
+		noasm("movl %%edi, %0" : "=m" (iks->k_edi));
+		noasm("movl %%esi, %0" : "=m" (iks->k_esi));
 		/* "Current" instruction pointer */
-		__asm__ volatile("movl $1f, %0\n1:" : "=m" (iks->k_eip));
+		noasm("movl $1f, %0\n1:" : "=m" (iks->k_eip));
 #else
 		/* Display the trap handler path */
-		__asm__ volatile("movq %%rbx, %0" : "=m" (iks->k_rbx));
-		__asm__ volatile("movq %%rsp, %0" : "=m" (iks->k_rsp));
-		__asm__ volatile("movq %%rbp, %0" : "=m" (iks->k_rbp));
-		__asm__ volatile("movq %%r12, %0" : "=m" (iks->k_r12));
-		__asm__ volatile("movq %%r13, %0" : "=m" (iks->k_r13));
-		__asm__ volatile("movq %%r14, %0" : "=m" (iks->k_r14));
-		__asm__ volatile("movq %%r15, %0" : "=m" (iks->k_r15));
+		noasm("movq %%rbx, %0" : "=m" (iks->k_rbx));
+		noasm("movq %%rsp, %0" : "=m" (iks->k_rsp));
+		noasm("movq %%rbp, %0" : "=m" (iks->k_rbp));
+		noasm("movq %%r12, %0" : "=m" (iks->k_r12));
+		noasm("movq %%r13, %0" : "=m" (iks->k_r13));
+		noasm("movq %%r14, %0" : "=m" (iks->k_r14));
+		noasm("movq %%r15, %0" : "=m" (iks->k_r15));
 		/* "Current" instruction pointer */
-		__asm__ volatile("leaq 1f(%%rip), %%rax; mov %%rax, %0\n1:" : "=m" (iks->k_rip)::"rax");
+		noasm("leaq 1f(%%rip), %%rax; mov %%rax, %0\n1:" : "=m" (iks->k_rip)::"rax");
 #endif
 	}
 }

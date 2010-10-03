@@ -535,19 +535,19 @@ void fillPage(ppnum_t pa, unsigned int fill)
 
 static inline void __sfence(void)
 {
-    __asm__ volatile("sfence");
+    noasm("sfence");
 }
 static inline void __mfence(void)
 {
-    __asm__ volatile("mfence");
+    noasm("mfence");
 }
 static inline void __wbinvd(void)
 {
-    __asm__ volatile("wbinvd");
+    noasm("wbinvd");
 }
 static inline void __clflush(void *ptr)
 {
-	__asm__ volatile("clflush (%0)" : : "r" (ptr));
+	noasm("clflush (%0)" : : "r" (ptr));
 }
 
 void dcache_incoherent_io_store64(addr64_t pa, unsigned int count)

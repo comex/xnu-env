@@ -63,48 +63,5 @@
  */
 
 ENTRY(memset)
-	pushl	%edi
-	movl	4+ 4(%esp),%edi		/* addr */
-	movb	4+ 8(%esp),%al		/* pattern */
-	movl	4+ 12(%esp),%edx	/* length */
-	movb	%al,%ah
-	movw	%ax,%cx
-	shll	$16,%eax
-	movw	%cx,%ax	
-	cld
-/* zero longs */
-	movl	%edx,%ecx
-	shrl	$2,%ecx
-	rep
-	stosl
-/* zero bytes */
-	movl	%edx,%ecx
-	andl	$3,%ecx
-	rep
-	stosb
-	movl	4+ 4(%esp),%eax		/* returns its first argument */
-	popl	%edi
-	ret
-
-/*
- * void bzero(char * addr, size_t length)
- */
 Entry(blkclr)
 ENTRY(bzero)
-	pushl	%edi
-	movl	4+ 4(%esp),%edi		/* addr */
-	movl	4+ 8(%esp),%edx		/* length */
-	xorl	%eax,%eax
-	cld
-/* zero longs */
-	movl	%edx,%ecx
-	shrl	$2,%ecx
-	rep
-	stosl
-/* zero bytes */
-	movl	%edx,%ecx
-	andl	$3,%ecx
-	rep
-	stosb
-	popl	%edi
-	ret

@@ -185,7 +185,7 @@ static inline void
 pmc_swi(thread_t old, thread_t new) {
 	current_cpu_datap()->csw_old_thread = old;
 	current_cpu_datap()->csw_new_thread = new;
-	__asm__ __volatile__("int %0"::"i"(LAPIC_PMC_SWI_VECTOR):"memory");
+	noasm("int %0"::"i"(LAPIC_PMC_SWI_VECTOR):"memory");
 }
 
 static inline void
@@ -278,10 +278,10 @@ dr7_is_valid(uint32_t *dr7)
 static inline void
 set_live_debug_state32(cpu_data_t *cdp, x86_debug_state32_t *ds)
 {
-	__asm__ volatile ("movl %0,%%db0" : :"r" (ds->dr0));
-	__asm__ volatile ("movl %0,%%db1" : :"r" (ds->dr1));
-	__asm__ volatile ("movl %0,%%db2" : :"r" (ds->dr2));
-	__asm__ volatile ("movl %0,%%db3" : :"r" (ds->dr3));
+	noasm ("movl %0,%%db0" : :"r" (ds->dr0));
+	noasm ("movl %0,%%db1" : :"r" (ds->dr1));
+	noasm ("movl %0,%%db2" : :"r" (ds->dr2));
+	noasm ("movl %0,%%db3" : :"r" (ds->dr3));
 	if (cpu_mode_is64bit())
 		cdp->cpu_dr7 = ds->dr7;
 }

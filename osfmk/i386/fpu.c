@@ -113,7 +113,7 @@ configure_mxcsr_capability_mask(struct x86_fpsave_state *ifps)
 	bzero(ifps, sizeof(*ifps));
 	/* Disable FPU/SSE Device Not Available exceptions */
 	clear_ts();
-	__asm__ volatile("fxsave %0" : "=m" (ifps->fx_save_state));
+	noasm("fxsave %0" : "=m" (ifps->fx_save_state));
 	mxcsr_capability_mask = ifps->fx_save_state.fx_MXCSR_MASK;
 
 	/* Set default mask value if necessary */

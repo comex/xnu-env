@@ -531,9 +531,9 @@ NMIInterruptHandler(x86_saved_state_t *regs)
 	
 	sync_iss_to_iks_unconditionally(regs);
 #if defined (__i386__)
-	__asm__ volatile("movl %%ebp, %0" : "=m" (stackptr));
+	noasm("movl %%ebp, %0" : "=m" (stackptr));
 #elif defined (__x86_64__)
-	__asm__ volatile("movq %%rbp, %0" : "=m" (stackptr));
+	noasm("movq %%rbp, %0" : "=m" (stackptr));
 #endif
 
 	if (cpu_number() == debugger_cpu)
@@ -1314,7 +1314,7 @@ mp_kdp_exit(void)
 	debugger_exit_time = mach_absolute_time();
 
 	mp_kdp_trap = FALSE;
-	__asm__ volatile("mfence");
+	noasm("mfence");
 
 	/* Wait other processors to stop spinning. XXX needs timeout */
 	DBG("mp_kdp_exit() waiting for processors to resume\n");
@@ -1442,7 +1442,7 @@ mp_kdb_exit(void)
 	DBG("mp_kdb_exit()\n");
 	atomic_decl((volatile long *)&mp_kdb_ncpus, 1);
 	mp_kdb_trap = FALSE;
-	__asm__ volatile("mfence");
+	noasm("mfence");
 
 	while (mp_kdb_ncpus > 0) {
 	        /*

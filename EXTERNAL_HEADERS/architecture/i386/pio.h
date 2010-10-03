@@ -65,7 +65,7 @@ static __inline__ unsigned int	inl(
 				i386_ioport_t port)
 {
 	unsigned int datum;
-	__asm__ volatile("inl %w1, %0" : "=a" (datum) : "Nd" (port));
+	//__asm__ volatile("inl %w1, %0" : "=a" (datum) : "Nd" (port));
 	return(datum);
 }
 
@@ -73,7 +73,7 @@ static __inline__ unsigned short inw(
 				i386_ioport_t port)
 {
 	unsigned short datum;
-	__asm__ volatile("inw %w1, %w0" : "=a" (datum) : "Nd" (port));
+	//__asm__ volatile("inw %w1, %w0" : "=a" (datum) : "Nd" (port));
 	return(datum);
 }
 
@@ -81,7 +81,7 @@ static __inline__ unsigned char inb(
 				i386_ioport_t port)
 {
 	unsigned char datum;
-	__asm__ volatile("inb %w1, %b0" : "=a" (datum) : "Nd" (port));
+	//__asm__ volatile("inb %w1, %b0" : "=a" (datum) : "Nd" (port));
 	return(datum);
 }
 
@@ -89,21 +89,21 @@ static __inline__ void outl(
 				i386_ioport_t port,
 				unsigned int datum)
 {
-	__asm__ volatile("outl %0, %w1" : : "a" (datum), "Nd" (port));
+	//__asm__ volatile("outl %0, %w1" : : "a" (datum), "Nd" (port));
 }
 
 static __inline__ void outw(
 				i386_ioport_t port,
 				unsigned short datum)
 {
-	__asm__ volatile("outw %w0, %w1" : : "a" (datum), "Nd" (port));
+	//__asm__ volatile("outw %w0, %w1" : : "a" (datum), "Nd" (port));
 }
 
 static __inline__ void outb(
 				i386_ioport_t port,
 				unsigned char datum)
 {
-	__asm__ volatile("outb %b0, %w1" : : "a" (datum), "Nd" (port));
+	//__asm__ volatile("outb %b0, %w1" : : "a" (datum), "Nd" (port));
 }
 #endif /* defined(__GNUC__) */
 #endif /* _ARCH_I386_PIO_H_ */

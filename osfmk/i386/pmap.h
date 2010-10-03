@@ -193,7 +193,7 @@ pmap_store_pte(pt_entry_t *entryp, pt_entry_t value)
 	 * If the compare succeeds, the new value will have been stored.
 	 * Otherwise, the old value changed and reloaded, so try again.
 	 */
-	__asm__ volatile(
+	noasm(
 		"	movl	(%0), %%eax	\n\t"
 		"	movl	4(%0), %%edx	\n\t"
 		"1:				\n\t"
@@ -229,7 +229,7 @@ pmap_cmpx_pte(pt_entry_t *entryp, pt_entry_t old, pt_entry_t new)
 	 * If the compare succeeds, the new value is stored, return TRUE.
 	 * Otherwise, no swap is made, return FALSE.
 	 */
-	asm volatile(
+	noasm(
 		"	lock; cmpxchg8b (%1)	\n\t"
 		"	setz	%%al		\n\t"
 		"	movzbl	%%al,%0"
@@ -248,7 +248,7 @@ pmap_cmpx_pte(pt_entry_t *entryp, pt_entry_t old, pt_entry_t new)
 	 * If the compare succeeds, the new value is stored, return TRUE.
 	 * Otherwise, no swap is made, return FALSE.
 	 */
-	asm volatile(
+	noasm(
 		"	lock; cmpxchgq %2,(%3)	\n\t"
 		"	setz	%%al		\n\t"
 		"	movzbl	%%al,%0"
@@ -839,7 +839,7 @@ extern void pmap_pagetable_corruption_msg_log(int (*)(const char * fmt, ...)__pr
 #define MARK_CPU_IDLE(my_cpu)	{					\
 	int	s = splhigh();						\
 	CPU_CR3_MARK_INACTIVE();					\
-	__asm__ volatile("mfence");					\
+	noasm("mfence");					\
 	splx(s);							\
 }
 #else /* __i386__ native */
@@ -857,7 +857,7 @@ extern void pmap_pagetable_corruption_msg_log(int (*)(const char * fmt, ...)__pr
 	else								\
 		pmap_load_kernel_cr3();					\
 	CPU_CR3_MARK_INACTIVE();					\
-	__asm__ volatile("mfence");					\
+	noasm("mfence");					\
 	splx(s);							\
 }
 #endif /* __i386__ */
@@ -876,7 +876,7 @@ extern void pmap_pagetable_corruption_msg_log(int (*)(const char * fmt, ...)__pr
 	 *	interrupt if this happens.				\
 	 */								\
 	CPU_CR3_MARK_ACTIVE();						\
-	__asm__ volatile("mfence");					\
+	noasm("mfence");					\
 									\
 	if (current_cpu_datap()->cpu_tlb_invalid)			\
 	    process_pmap_updates();					\

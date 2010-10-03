@@ -328,6 +328,6 @@ install_real_mode_bootstrap(void *prot_entry)
 		(unsigned int)kvtophys((vm_offset_t)prot_entry));
 	
 	/* Flush caches */
-	__asm__("wbinvd");
+	noasm("wbinvd");
 }
 

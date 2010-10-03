@@ -109,7 +109,7 @@ machine_idle(void)
 	 * cause problems in some MP configurations w.r.t. the APIC
 	 * stopping during a GV3 transition).
 	 */
-	__asm__ volatile ("sti; hlt");
+	noasm ("sti; hlt");
     }
 
     /*
@@ -123,7 +123,7 @@ machine_idle(void)
      * Re-enable interrupts.
      */
   out:
-    __asm__ volatile("sti");
+    noasm("sti");
 }
 
 /*
@@ -138,17 +138,17 @@ pmCPUHalt(uint32_t reason)
     switch (reason) {
     case PM_HALT_DEBUG:
 	cpup->lcpu.state = LCPU_PAUSE;
-	__asm__ volatile ("wbinvd; hlt");
+	noasm ("wbinvd; hlt");
 	break;
 
     case PM_HALT_PANIC:
 	cpup->lcpu.state = LCPU_PAUSE;
-	__asm__ volatile ("cli; wbinvd; hlt");
+	noasm ("cli; wbinvd; hlt");
 	break;
 
     case PM_HALT_NORMAL:
     default:
-	__asm__ volatile ("cli");
+	noasm ("cli");
 
     if (pmInitDone
 	    && pmDispatch != NULL
@@ -170,9 +170,9 @@ pmCPUHalt(uint32_t reason)
 	     * then invalidate the cache and halt it (it will not be able
 	     * to be brought back on-line without resetting the CPU).
 	     */
-	    __asm__ volatile ("wbinvd");
+	    noasm ("wbinvd");
 	    cpup->lcpu.state = LCPU_HALT;
-	    __asm__ volatile ( "wbinvd; hlt" );
+	    noasm ( "wbinvd; hlt" );
 
 	    panic("back from Halt");
 	}

@@ -170,7 +170,7 @@
 inline static void
 _postcode_delay(uint32_t	spincount)
 {
-	asm volatile("1:			\n\t"
+	noasm("1:			\n\t"
 	             "  rep; nop;		\n\t"	
 		     "  decl %%eax;		\n\t"
 		     "  jne 1b"
@@ -179,12 +179,12 @@ _postcode_delay(uint32_t	spincount)
 inline static void
 _postcode(uint8_t	xx)
 {
-	asm volatile("outb %0, %1" : : "a" (xx), "N" (POSTPORT));
+	noasm("outb %0, %1" : : "a" (xx), "N" (POSTPORT));
 }
 inline static void
 _postcode2(uint16_t	xxxx)
 {
-	asm volatile("outw %0, %1" : : "a" (xxxx), "N" (POSTPORT));
+	noasm("outw %0, %1" : : "a" (xxxx), "N" (POSTPORT));
 }
 #if	DEBUG
 inline static void

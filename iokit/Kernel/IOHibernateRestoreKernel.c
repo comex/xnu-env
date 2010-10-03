@@ -674,24 +674,6 @@ hibernate_kernel_entrypoint(IOHibernateImageHeader * header,
 
     gIOHibernateState = kIOHibernateStateWakingFromHibernate;
 
-#if CONFIG_SLEEP
-#if defined(__ppc__)
-    typedef void (*ResetProc)(void);
-    ResetProc proc;
-    proc = (ResetProc) 0x100;
-    __asm__ volatile("ori 0, 0, 0" : : );
-    proc();
-#elif defined(__i386__) || defined(__x86_64__)
-    typedef void (*ResetProc)(void);
-    ResetProc proc;
-    proc = (ResetProc) acpi_wake_prot_entry;
-    // flush caches
-    __asm__("wbinvd");
-    proc();
-#else
-// implement me
-#endif
-#endif
 
     return -1;
 }

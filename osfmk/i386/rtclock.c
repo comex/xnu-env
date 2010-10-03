@@ -104,7 +104,7 @@ static inline uint64_t
 _tsc_to_nanoseconds(uint64_t value)
 {
 #if defined(__i386__)
-    asm volatile("movl	%%edx,%%esi	;"
+    noasm("movl	%%edx,%%esi	;"
 		 "mull	%%ecx		;"
 		 "movl	%%edx,%%edi	;"
 		 "movl	%%esi,%%eax	;"
@@ -115,7 +115,7 @@ _tsc_to_nanoseconds(uint64_t value)
 		 : "c" (current_cpu_datap()->cpu_nanotime->scale)
 		 : "esi", "edi");
 #elif defined(__x86_64__)
-    asm volatile("mul %%rcx;"
+    noasm("mul %%rcx;"
 		 "shrq $32, %%rax;"
 		 "shlq $32, %%rdx;"
 		 "orq %%rdx, %%rax;"
@@ -134,11 +134,11 @@ _absolutetime_to_microtime(uint64_t abstime, clock_sec_t *secs, clock_usec_t *mi
 {
 	uint32_t remain;
 #if defined(__i386__)
-	asm volatile(
+	noasm(
 			"divl %3"
 				: "=a" (*secs), "=d" (remain)
 				: "A" (abstime), "r" (NSEC_PER_SEC));
-	asm volatile(
+	noasm(
 			"divl %3"
 				: "=a" (*microsecs)
 				: "0" (remain), "d" (0), "r" (NSEC_PER_USEC));
@@ -156,7 +156,7 @@ static inline void
 _absolutetime_to_nanotime(uint64_t abstime, clock_sec_t *secs, clock_usec_t *nanosecs)
 {
 #if defined(__i386__)
-	asm volatile(
+	noasm(
 			"divl %3"
 			: "=a" (*secs), "=d" (*nanosecs)
 			: "A" (abstime), "r" (NSEC_PER_SEC));

@@ -60,140 +60,17 @@ LEXT(idtptr64)
 
 Entry(ml_load_desc64)
 
-	ENTER_64BIT_MODE()
-
-	POSTCODE(ML_LOAD_DESC64_ENTRY)
-	
-	lgdt	EXT(gdtptr64)		/* load GDT */
-
-	POSTCODE(ML_LOAD_DESC64_GDT)
-
-	lidt	EXT(idtptr64)		/* load IDT */
-
-	POSTCODE(ML_LOAD_DESC64_IDT)
-
-	movw	$(KERNEL_LDT),%ax	/* get LDT segment */
-	lldt	%ax			/* load LDT */
-
-	POSTCODE(ML_LOAD_DESC64_LDT)
-
-	movw	$(KERNEL_TSS),%ax
-	ltr	%ax			/* set up KTSS */
-
-	POSTCODE(ML_LOAD_DESC64_EXIT)
-
-	ENTER_COMPAT_MODE()
-
-	ret
-
-
 Entry(ml_64bit_lldt)
-	/* (int32_t selector) */
-
-	FRAME
-
-	ENTER_64BIT_MODE()
-
-	movl	B_ARG0, %eax
-	lldt	%ax
-
-	ENTER_COMPAT_MODE()
-
-	EMARF
-	ret
-
 Entry(set_64bit_debug_regs)
-	/* x86_debug_state64_t *ds */
-
-	FRAME
-
-	ENTER_64BIT_MODE()
-
-	mov	B_ARG0, %edx
-	mov	DS64_DR0(%edx), %rax
-	mov	%rax, %dr0
-	mov	DS64_DR1(%edx), %rax
-	mov	%rax, %dr1
-	mov	DS64_DR2(%edx), %rax
-	mov	%rax, %dr2
-	mov	DS64_DR3(%edx), %rax
-	mov	%rax, %dr3
-
-	ENTER_COMPAT_MODE()
-
-	EMARF
-	ret
-
 Entry(flush_tlb64)
-
-	FRAME
-
-	ENTER_64BIT_MODE()
-
-	mov	%cr3, %rax
-	mov	%rax, %cr3
-
-	ENTER_COMPAT_MODE()
-
-	EMARF
-	ret
-
 Entry(set64_cr3)
-
-	FRAME
-
-	movl	B_ARG0, %eax
-	movl	B_ARG1, %edx
-
-	ENTER_64BIT_MODE()
-
-	/* %rax = %edx:%eax */
-	shl	$32, %rax
-	shrd	$32, %rdx, %rax
-
-	mov	%rax, %cr3
-
-	ENTER_COMPAT_MODE()
-
-	EMARF
-	ret
-
 Entry(get64_cr3)
-
-	FRAME
-
-	ENTER_64BIT_MODE()
-
-	mov	%cr3, %rax
-	mov	%rax, %rdx
-	shr	$32, %rdx		// %edx:%eax = %cr3
-
-	ENTER_COMPAT_MODE()
-
-	EMARF
-	ret
 
 /* FXSAVE and FXRSTOR operate in a mode dependent fashion, hence these variants.
  * Must be called with interrupts disabled.
  */
 
 Entry(fxsave64)
-	movl		S_ARG0,%eax
-	ENTER_64BIT_MODE()
-	fxsave		0(%eax)
-	ENTER_COMPAT_MODE()
-	ret
-
 Entry(fxrstor64)
-	movl		S_ARG0,%eax
-	ENTER_64BIT_MODE()
-	fxrstor		0(%rax)
-	ENTER_COMPAT_MODE()
-	ret
 
 Entry(cpuid64)
-	ENTER_64BIT_MODE()
-	cpuid
-	ENTER_COMPAT_MODE()
-	ret
-

@@ -56,7 +56,7 @@ unsigned short
 ntohs(unsigned short w_int)
 {
 	register unsigned short w = w_int;
-	__asm__ volatile("xchgb	%h1,%b1" : "=q" (w) : "0" (w));
+	noasm("xchgb	%h1,%b1" : "=q" (w) : "0" (w));
 	return (w);	/* zero-extend for compat */
 }
 #endif
@@ -73,7 +73,7 @@ unsigned long
 ntohl(register unsigned long value)
 {
 	register unsigned long l = value;
-	__asm__ volatile("bswap %0" : "=r" (l) : "0" (l));
+	noasm("bswap %0" : "=r" (l) : "0" (l));
 	return l;
 }
 #endif

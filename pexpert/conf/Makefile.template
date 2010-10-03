@@ -28,7 +28,7 @@ include $(MakeInc_def)
 #
 #
 CFLAGS+= -imacros meta_features.h -DPEXPERT_KERNEL_PRIVATE	\
-	-Werror $(CFLAGS_INLINE_CONFIG)
+	-Wno-error $(CFLAGS_INLINE_CONFIG)
 
 #
 # Directories for mig generated files

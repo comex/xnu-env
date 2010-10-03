@@ -2,7 +2,7 @@
 #BEGIN  Machine dependent Makefile fragment for x86_64
 ######################################################################
  
-# Enable -Werror for x86_64 builds
+# Enable -Wno-error for x86_64 builds
 CFLAGS+= $(WERROR)
 CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
 
@@ -11,7 +11,7 @@ CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
  
 OBJS_WERROR=$(filter-out $(OBJS_NO_WERROR),$(OBJS))
 
-$(OBJS_WERROR):		WERROR=-Werror
+$(OBJS_WERROR):		WERROR=-Wno-error
 
 # Files that must go in the __HIB segment:
 UNCONFIGURED_HIB_FILES=	\

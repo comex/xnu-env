@@ -211,7 +211,7 @@ boolean_t ml_get_interrupts_enabled(void)
 {
   unsigned long flags;
 
-  __asm__ volatile("pushf; pop	%0" :  "=r" (flags));
+  noasm("pushf; pop	%0" :  "=r" (flags));
   return (flags & EFL_IF) != 0;
 }
 
@@ -220,7 +220,7 @@ boolean_t ml_set_interrupts_enabled(boolean_t enable)
 {
   unsigned long flags;
 
-  __asm__ volatile("pushf; pop	%0" :  "=r" (flags));
+  noasm("pushf; pop	%0" :  "=r" (flags));
 
   if (enable) {
 	ast_t		*myast;
@@ -228,14 +228,14 @@ boolean_t ml_set_interrupts_enabled(boolean_t enable)
 	myast = ast_pending();
 
 	if ( (get_preemption_level() == 0) &&  (*myast & AST_URGENT) ) {
-	__asm__ volatile("sti");
-          __asm__ volatile ("int $0xff");
+	noasm("sti");
+          noasm ("int $0xff");
         } else {
-	  __asm__ volatile ("sti");
+	  noasm ("sti");
 	}
   }
   else {
-	__asm__ volatile("cli");
+	noasm("cli");
   }
 
   return (flags & EFL_IF) != 0;

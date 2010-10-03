@@ -5,7 +5,7 @@
 CFLAGS+= -DAT386=1
 SFLAGS+= -DAT386=1
 
-# Enable -Werror for i386 builds
+# Enable -Wno-error for i386 builds
 CFLAGS+= $(WERROR) -Wshorten-64-to-32
 CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
 
@@ -23,7 +23,7 @@ OBJS_NO_WERROR=				\
 
 OBJS_WERROR=$(filter-out $(OBJS_NO_WERROR),$(OBJS))
 
-$(OBJS_WERROR):		WERROR=-Werror
+$(OBJS_WERROR):		WERROR=-Wno-error
 
 # Files that must go in the __HIB segment:
 UNCONFIGURED_HIB_FILES=					\

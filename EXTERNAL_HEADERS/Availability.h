@@ -1,0 +1,5 @@
+#ifndef _AVAILABILITY_H
+#define _AVAILABILITY_H
+#define __OSX_AVAILABLE_STARTING(...)
+#define __OSX_AVAILABLE_BUT_DEPRECATED(...)
+#endif

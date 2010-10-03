@@ -3,10 +3,10 @@ export MakeInc_def=${SRCROOT}/makedefs/MakeInc.def
 export MakeInc_rule=${SRCROOT}/makedefs/MakeInc.rule
 export MakeInc_dir=${SRCROOT}/makedefs/MakeInc.dir
 
-export dp_backing_file.o_CFLAGS_ADD=-Werror -Wshorten-64-to-32
+export dp_backing_file.o_CFLAGS_ADD=-Wshorten-64-to-32
 export ubc_subr.o_CFLAGS_ADD=-Wno-discard-qual -Wshorten-64-to-32
-export vnode_pager.o_CFLAGS_ADD=-Werror -Wshorten-64-to-32
-export vm_unix.o_CFLAGS_ADD=-Werror -Wshorten-64-to-32
+export vnode_pager.o_CFLAGS_ADD=-Wshorten-64-to-32
+export vm_unix.o_CFLAGS_ADD=-Wshorten-64-to-32
 
 export if_mib.o_CFLAGS_ADD=-Wno-unused-parameter
 export adsp_Write.o_CFLAGS_ADD=-Wno-sign-compare

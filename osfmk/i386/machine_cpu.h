@@ -48,12 +48,12 @@ __END_DECLS
 
 static inline void cpu_halt(void)
 {
-	asm volatile( "wbinvd; cli; hlt" );
+	noasm( "wbinvd; cli; hlt" );
 }
 
 static inline void cpu_pause(void)
 {
-	asm volatile( "rep; nop" );
+	noasm( "rep; nop" );
 }
 
 #endif /* _I386_MACHINE_CPU_H_ */

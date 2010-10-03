@@ -2,7 +2,7 @@
 #BEGIN	Machine dependent Makefile fragment for ppc
 ######################################################################
 
-# Enable -Werror for ppc builds
+# Enable -Wno-error for ppc builds
 CFLAGS+=$(WERROR)
 CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
 
@@ -11,7 +11,7 @@ CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
 
 OBJS_WERROR=$(filter-out $(OBJS_NO_WERROR),$(OBJS))
 
-$(OBJS_WERROR):		WERROR=-Werror
+$(OBJS_WERROR):		WERROR=-Wno-error
 
 ######################################################################
 #END	Machine dependent Makefile fragment for ppc

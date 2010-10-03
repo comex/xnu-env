@@ -70,13 +70,6 @@
  */
 LEAF(_ev_unlock, 0)
 LEAF(_IOSpinUnlock, 0)
-#if __x86_64__
-	movl		$0, (%rdi)
-#else
-	movl		4(%esp), %ecx
-	movl		$0, (%ecx)
-#endif
-END(_ev_unlock)
 
 
 /*
@@ -89,25 +82,6 @@ END(_ev_unlock)
 
 LEAF(_ev_try_lock, 0)
 LEAF(_IOTrySpinLock, 0)
-#if __x86_64__
-	xorl		%eax, %eax
-	orl		$-1, %edx
-	lock
-	cmpxchgl	%edx, (%rdi)
-	setz		%dl
-	movzbl		%dl, %eax
-#else
-        movl            4(%esp), %ecx 
-	xorl		%eax, %eax
-        lock
-        cmpxchgl        %ecx, (%ecx)
-	jne	1f
-	movl	$1, %eax		/* yes */
-	ret
-1:
-	xorl	%eax, %eax		/* no */
-#endif
-END(_ev_try_lock)
 
 
 #endif /* ! _IOKIT_IOSHAREDLOCKIMP_H */

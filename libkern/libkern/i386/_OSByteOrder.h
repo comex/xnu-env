@@ -59,7 +59,7 @@ _OSSwapInt32(
 #if defined(__llvm__)
     return __builtin_bswap32(_data);
 #else
-    __asm__ ("bswap   %0" : "+r" (_data));
+    __asm__ ("rev   %0, %0" : "+r" (_data));
     return _data;
 #endif
 }
@@ -81,10 +81,6 @@ _OSSwapInt64(
     __uint64_t        _data
 )
 {
-    __asm__ ("bswap   %%eax\n\t"
-             "bswap   %%edx\n\t" 
-             "xchgl   %%eax, %%edx"
-             : "+A" (_data));
     return _data;
 }
 #elif defined(__x86_64__)
@@ -94,7 +90,7 @@ _OSSwapInt64(
     __uint64_t        _data
 )
 {
-    __asm__ ("bswap   %0" : "+r" (_data));
+    __asm__ ("rev   %0, %0" : "+r" (_data));
     return _data;
 }
 #else

@@ -153,7 +153,7 @@ export INSTALL_ARCH_DEFAULT	= $(firstword $(INSTALL_ARCHS))
 #
 # Standard defines list
 #
-export DEFINES = -DAPPLE -DKERNEL -DKERNEL_PRIVATE -DXNU_KERNEL_PRIVATE -DPRIVATE -D__MACHO__=1 -Dvolatile=__volatile $(IDENT)
+export DEFINES = -DAPPLE -DKERNEL -DKERNEL_PRIVATE -DXNU_KERNEL_PRIVATE -DPRIVATE -Dnoasm'(...)'= -D__MACHO__=1 -Dvolatile=__volatile $(IDENT)
 
 #
 # Compiler command
@@ -192,7 +192,7 @@ endif
 # Default ARCH_FLAGS, for use with compiler/linker/assembler/mig drivers
 
 ARCH_FLAGS_PPC		  = -arch ppc
-ARCH_FLAGS_I386		  = -arch i386
+ARCH_FLAGS_I386		  = -arch armv7 -mthumb
 ARCH_FLAGS_X86_64	  = -arch x86_64
 ARCH_FLAGS_ARM		  = $($(addsuffix $(MACHINE_CONFIG),ARCH_FLAGS_ARM_))
 
@@ -236,7 +236,7 @@ export CFLAGS_PROFILE 	=  -pg
 
 export CFLAGS_PPC 	= -Dppc -DPPC -D__PPC__ -DPAGE_SIZE_FIXED \
 				-mno-altivec -force_cpusubtype_ALL
-export CFLAGS_I386 	= -Di386 -DI386 -D__I386__ \
+export CFLAGS_I386 	= -Di386 -DI386 -D__I386__ -D__i386__ \
 				-DPAGE_SIZE_FIXED -force_cpusubtype_ALL
 export CFLAGS_X86_64	= -Dx86_64 -DX86_64 -D__X86_64__ -DLP64 \
 				-DPAGE_SIZE_FIXED -mkernel

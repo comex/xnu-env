@@ -83,7 +83,7 @@ cpu_IA32e_enable(cpu_data_t *cdp)
 	 * non-identity mapped data while paging is turned off...
 	 */
 	/* Turn paging off */
-	asm volatile(
+	noasm(
 		"mov	%%cr0, %%eax	\n\t"
 		"andl	%0, %%eax	\n\t"
 		"mov	%%eax, %%cr0	\n\t"
@@ -92,13 +92,13 @@ cpu_IA32e_enable(cpu_data_t *cdp)
 		: "eax" );
 
 	/* Pop new top level phys pg addr into CR3 */
-	asm volatile(
+	noasm(
 		"mov	%%eax, %%cr3	\n\t"
 		:
 		: "a" ((uint32_t) kernel64_cr3));
 
 	/* Turn on the 64-bit mode bit */
-	asm volatile(
+	noasm(
 		"rdmsr			\n\t"
 		"orl	%1, %%eax	\n\t"
 		"wrmsr			\n\t"
@@ -107,7 +107,7 @@ cpu_IA32e_enable(cpu_data_t *cdp)
 		: "eax", "edx");
 
 	/* Turn paging on again */
-	asm volatile(
+	noasm(
 		"mov	%%cr0, %%eax	\n\t"
 		"orl	%0, %%eax	\n\t"
 		"mov	%%eax, %%cr0	\n\t"
@@ -144,7 +144,7 @@ cpu_IA32e_disable(cpu_data_t *cdp)
 	 * non-identity mapped data while paging is turned off...
 	 */
 	/* Turn paging off */
-	asm volatile(
+	noasm(
 		"mov	%%cr0, %%eax	\n\t"
 		"andl	%0, %%eax	\n\t"
 		"mov	%%eax, %%cr0	\n\t"
@@ -153,13 +153,13 @@ cpu_IA32e_disable(cpu_data_t *cdp)
 		: "eax" );
 
 	/* Pop legacy top level phys pg addr into CR3 */
-	asm volatile(
+	noasm(
 		"mov	%%eax, %%cr3	\n\t"
 		:
 		: "a" ((uint32_t) lo_kernel_cr3));
 
 	/* Turn off the 64-bit mode bit */
-	asm volatile(
+	noasm(
 		"rdmsr			\n\t"
 		"andl	%1, %%eax	\n\t"
 		"wrmsr			\n\t"
@@ -168,7 +168,7 @@ cpu_IA32e_disable(cpu_data_t *cdp)
 		: "eax", "edx");
 
 	/* Turn paging on again */
-	asm volatile(
+	noasm(
 		"mov	%%cr0, %%eax	\n\t"
 		"orl	%0, %%eax	\n\t"
 		"mov	%%eax, %%cr0	\n\t"

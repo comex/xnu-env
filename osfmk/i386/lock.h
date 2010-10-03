@@ -96,7 +96,7 @@ extern unsigned int LockTimeOut;	/* Lock timeout in absolute time */
  */
 
 #define	bit_lock(bit,l)							\
-	__asm__ volatile("	jmp	1f	\n			\
+	noasm("	jmp	1f	\n			\
 		 	0:	btl	%0, %1	\n			\
 				jb	0b	\n			\
 			1:	lock		\n			\
@@ -107,7 +107,7 @@ extern unsigned int LockTimeOut;	/* Lock timeout in absolute time */
 			"memory");
 
 #define	bit_unlock(bit,l)						\
-	__asm__ volatile("	lock		\n			\
+	noasm("	lock		\n			\
 				btrl	%0,%1"			:	\
 								:	\
 			"r" (bit), "m" (*(volatile int *)(l)));
@@ -119,13 +119,13 @@ extern unsigned int LockTimeOut;	/* Lock timeout in absolute time */
  */
 
 #define	i_bit_set(bit,l)						\
-	__asm__ volatile("	lock		\n			\
+	noasm("	lock		\n			\
 				btsl	%0,%1"			:	\
 								:	\
 			"r" (bit), "m" (*(volatile int *)(l)));
 
 #define	i_bit_clear(bit,l)						\
-	__asm__ volatile("	lock		\n			\
+	noasm("	lock		\n			\
 				btrl	%0,%1"			:	\
 								:	\
 			"r" (bit), "m" (*(volatile int *)(l)));
@@ -152,7 +152,7 @@ static inline char	xchgb(volatile char * cp, char new)
 {
 	register char	old = new;
 
-	__asm__ volatile ("	xchgb	%0,%2"			:
+	noasm ("	xchgb	%0,%2"			:
 			"=q" (old)				:
 			"0" (new), "m" (*(volatile char *)cp) : "memory");
 	return (old);
@@ -160,7 +160,7 @@ static inline char	xchgb(volatile char * cp, char new)
 
 static inline void	atomic_incl(volatile long * p, long delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				add    %0,%1"		:	\
 							:	\
 				"r" (delta), "m" (*(volatile long *)p));
@@ -168,7 +168,7 @@ static inline void	atomic_incl(volatile long * p, long delta)
 
 static inline void	atomic_incs(volatile short * p, short delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				addw    %0,%1"		:	\
 							:	\
 				"q" (delta), "m" (*(volatile short *)p));
@@ -176,7 +176,7 @@ static inline void	atomic_incs(volatile short * p, short delta)
 
 static inline void	atomic_incb(volatile char * p, char delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				addb    %0,%1"		:	\
 							:	\
 				"q" (delta), "m" (*(volatile char *)p));
@@ -184,7 +184,7 @@ static inline void	atomic_incb(volatile char * p, char delta)
 
 static inline void	atomic_decl(volatile long * p, long delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				sub		%0,%1"		:	\
 							:	\
 				"r" (delta), "m" (*(volatile long *)p));
@@ -193,7 +193,7 @@ static inline void	atomic_decl(volatile long * p, long delta)
 static inline int	atomic_decl_and_test(volatile long * p, long delta)
 {
 	uint8_t	ret;
-	__asm__ volatile (
+	noasm (
 		"	lock		\n\t"
 		"	sub		%1,%2	\n\t"
 		"	sete	%0"
@@ -204,7 +204,7 @@ static inline int	atomic_decl_and_test(volatile long * p, long delta)
 
 static inline void	atomic_decs(volatile short * p, short delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				subw    %0,%1"		:	\
 							:	\
 				"q" (delta), "m" (*(volatile short *)p));
@@ -212,7 +212,7 @@ static inline void	atomic_decs(volatile short * p, short delta)
 
 static inline void	atomic_decb(volatile char * p, char delta)
 {
-	__asm__ volatile ("	lock		\n		\
+	noasm ("	lock		\n		\
 				subb    %0,%1"		:	\
 							:	\
 				"q" (delta), "m" (*(volatile char *)p));

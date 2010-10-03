@@ -1481,7 +1481,7 @@ pmap_load_kernel_cr3(void)
 	set64_cr3(kernel_cr3);
 	current_cpu_datap()->cpu_active_cr3 = kernel_cr3;
 	current_cpu_datap()->cpu_tlb_invalid = FALSE;
-	__asm__ volatile("mfence");
+	noasm("mfence");
 }
 
 /*
@@ -3022,7 +3022,7 @@ pmap_flush_tlbs(pmap_t	pmap)
 				continue;
 			}
 			cpu_datap(cpu)->cpu_tlb_invalid = TRUE;
-			__asm__ volatile("mfence");
+			noasm("mfence");
 
 			if (CPU_CR3_IS_ACTIVE(cpu)) {
 				cpus_to_signal |= cpu_bit;
@@ -3093,7 +3093,7 @@ process_pmap_updates(void)
 	flush_tlb();
 
 	current_cpu_datap()->cpu_tlb_invalid = FALSE;
-	__asm__ volatile("mfence");
+	noasm("mfence");
 }
 
 void

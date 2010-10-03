@@ -169,88 +169,88 @@ __BEGIN_DECLS
 static inline uintptr_t get_cr0(void)
 {
 	uintptr_t cr0; 
-	__asm__ volatile("mov %%cr0, %0" : "=r" (cr0));
+	noasm("mov %%cr0, %0" : "=r" (cr0));
 	return(cr0);
 }
 
 static inline void set_cr0(uintptr_t value)
 {
-	__asm__ volatile("mov %0, %%cr0" : : "r" (value));
+	noasm("mov %0, %%cr0" : : "r" (value));
 }
 
 static inline uintptr_t get_cr2(void)
 {
 	uintptr_t cr2;
-	__asm__ volatile("mov %%cr2, %0" : "=r" (cr2));
+	noasm("mov %%cr2, %0" : "=r" (cr2));
 	return(cr2);
 }
 
 static inline uintptr_t get_cr3(void)
 {
 	register uintptr_t cr3;
-	__asm__ volatile("mov %%cr3, %0" : "=r" (cr3));
+	noasm("mov %%cr3, %0" : "=r" (cr3));
 	return(cr3);
 }
 
 static inline void set_cr3(uintptr_t value)
 {
-	__asm__ volatile("mov %0, %%cr3" : : "r" (value));
+	noasm("mov %0, %%cr3" : : "r" (value));
 }
 
 static inline uintptr_t get_cr4(void)
 {
 	uintptr_t cr4;
-	__asm__ volatile("mov %%cr4, %0" : "=r" (cr4));
+	noasm("mov %%cr4, %0" : "=r" (cr4));
 	return(cr4);
 }
 
 static inline void set_cr4(uintptr_t value)
 {
-	__asm__ volatile("mov %0, %%cr4" : : "r" (value));
+	noasm("mov %0, %%cr4" : : "r" (value));
 }
 
 static inline void clear_ts(void)
 {
-	__asm__ volatile("clts");
+	noasm("clts");
 }
 
 static inline unsigned short get_tr(void)
 {
 	unsigned short seg; 
-	__asm__ volatile("str %0" : "=rm" (seg));
+	noasm("str %0" : "=rm" (seg));
 	return(seg);
 }
 
 static inline void set_tr(unsigned int seg)
 {
-	__asm__ volatile("ltr %0" : : "rm" ((unsigned short)(seg)));
+	noasm("ltr %0" : : "rm" ((unsigned short)(seg)));
 }
 
 static inline unsigned short sldt(void)
 {
 	unsigned short seg;
-	__asm__ volatile("sldt %0" : "=rm" (seg));
+	noasm("sldt %0" : "=rm" (seg));
 	return(seg);
 }
 
 static inline void lldt(unsigned int seg)
 {
-	__asm__ volatile("lldt %0" : : "rm" ((unsigned short)(seg)));
+	noasm("lldt %0" : : "rm" ((unsigned short)(seg)));
 }
 
 static inline void lgdt(uintptr_t *desc)
 {
-	__asm__ volatile("lgdt %0" : : "m" (*desc));
+	noasm("lgdt %0" : : "m" (*desc));
 }
 
 static inline void lidt(uintptr_t *desc)
 {
-	__asm__ volatile("lidt %0" : : "m" (*desc));
+	noasm("lidt %0" : : "m" (*desc));
 }
 
 static inline void swapgs(void)
 {
-	__asm__ volatile("swapgs");
+	noasm("swapgs");
 }
 
 #ifdef MACH_KERNEL_PRIVATE
@@ -287,12 +287,12 @@ static inline void flush_tlb(void)
 
 static inline void wbinvd(void)
 {
-	__asm__ volatile("wbinvd");
+	noasm("wbinvd");
 }
 
 static inline void invlpg(uintptr_t addr)
 {
-	__asm__  volatile("invlpg (%0)" :: "r" (addr) : "memory");
+	noasm("invlpg (%0)" :: "r" (addr) : "memory");
 }
 
 /*
@@ -302,44 +302,44 @@ static inline void invlpg(uintptr_t addr)
  */
 
 #define rdmsr(msr,lo,hi) \
-	__asm__ volatile("rdmsr" : "=a" (lo), "=d" (hi) : "c" (msr))
+	noasm("rdmsr" : "=a" (lo), "=d" (hi) : "c" (msr))
 
 #define wrmsr(msr,lo,hi) \
-	__asm__ volatile("wrmsr" : : "c" (msr), "a" (lo), "d" (hi))
+	noasm("wrmsr" : : "c" (msr), "a" (lo), "d" (hi))
 
 #define rdtsc(lo,hi) \
-	__asm__ volatile("lfence; rdtsc; lfence" : "=a" (lo), "=d" (hi))
+	noasm("lfence; rdtsc; lfence" : "=a" (lo), "=d" (hi))
 
 #define write_tsc(lo,hi) wrmsr(0x10, lo, hi)
 
 #define rdpmc(counter,lo,hi) \
-	__asm__ volatile("rdpmc" : "=a" (lo), "=d" (hi) : "c" (counter))
+	noasm("rdpmc" : "=a" (lo), "=d" (hi) : "c" (counter))
 
 #ifdef __i386__
 
 static inline uint64_t rdmsr64(uint32_t msr)
 {
 	uint64_t ret;
-	__asm__ volatile("rdmsr" : "=A" (ret) : "c" (msr));
+	noasm("rdmsr" : "=A" (ret) : "c" (msr));
 	return ret;
 }
 
 static inline void wrmsr64(uint32_t msr, uint64_t val)
 {
-	__asm__ volatile("wrmsr" : : "c" (msr), "A" (val));
+	noasm("wrmsr" : : "c" (msr), "A" (val));
 }
 
 static inline uint64_t rdtsc64(void)
 {
 	uint64_t ret;
-	__asm__ volatile("lfence; rdtsc; lfence" : "=A" (ret));
+	noasm("lfence; rdtsc; lfence" : "=A" (ret));
 	return ret;
 }
 
 static inline uint64_t rdtscp64(uint32_t *aux)
 {
 	uint64_t ret;
-	__asm__ volatile("rdtscp; mov %%ecx, %1"
+	noasm("rdtscp; mov %%ecx, %1"
 				: "=A" (ret), "=m" (*aux)
 				:
 				: "ecx");
@@ -370,7 +370,7 @@ static inline uint64_t rdtsc64(void)
 static inline uint64_t rdtscp64(uint32_t *aux)
 {
 	uint32_t lo, hi;
-	__asm__ volatile("rdtscp; mov %%ecx, %1"
+	noasm("rdtscp; mov %%ecx, %1"
 					 : "=a" (lo), "=d" (hi), "=m" (*aux)
 					 :
 					 : "ecx");

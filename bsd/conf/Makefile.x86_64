@@ -7,7 +7,7 @@ dis_tables.o_CFLAGS_ADD += -Wno-cast-qual
 fbt_x86.o_CFLAGS_ADD += -Wno-cast-qual
 
 
-# Enable -Werror for x86_64 builds
+# Enable -Wno-error for x86_64 builds
 CFLAGS+=$(WERROR)
 CWARNFLAGS= $(filter-out -Wbad-function-cast, $(CWARNFLAGS_STD))
 
@@ -41,7 +41,7 @@ OBJS_NO_WERROR =		\
 
 OBJS_WERROR=$(filter-out $(OBJS_NO_WERROR),$(OBJS))
 
-$(OBJS_WERROR):		WERROR=-Werror
+$(OBJS_WERROR):		WERROR=-Wno-error
 
 ######################################################################
 #END    Machine dependent Makefile fragment for x86_64

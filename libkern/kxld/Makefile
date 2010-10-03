@@ -51,7 +51,7 @@ TESTDST=./BUILD/tests
 
 # Flags
 SDKROOT ?= /
-CFLAGS=-std=c99 -Wall -Wextra -Werror -pedantic -Wformat=2 -Wcast-align \
+CFLAGS=-std=c99 -Wall -Wextra -pedantic -Wformat=2 -Wcast-align \
 	-Wwrite-strings -Wshorten-64-to-32 -Wshadow -Winit-self -Wpointer-arith \
 	-Wno-format-y2k -W -Wstrict-prototypes -Wmissing-prototypes -Wreturn-type \
 	-Wcast-qual -Wwrite-strings -Wswitch -Wcast-align -Wbad-function-cast \

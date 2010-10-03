@@ -238,7 +238,7 @@ extern cpu_data_t	cpu_data_master;
 #endif /* offsetof */
 #define CPU_DATA_GET(member,type)					\
 	type ret;							\
-	__asm__ volatile ("mov %%gs:%P1,%0"				\
+	noasm ("mov %%gs:%P1,%0"				\
 		: "=r" (ret)						\
 		: "i" (offsetof(cpu_data_t,member)));			\
 	return ret;
@@ -297,7 +297,7 @@ get_cpu_phys_number(void)
 static inline void
 disable_preemption(void)
 {
-	__asm__ volatile ("incl %%gs:%P0"
+	noasm ("incl %%gs:%P0"
 			:
 			: "i" (offsetof(cpu_data_t, cpu_preemption_level)));
 }
@@ -307,7 +307,7 @@ enable_preemption(void)
 {
 	assert(get_preemption_level() > 0);
 
-	__asm__ volatile ("decl %%gs:%P0		\n\t"
+	noasm ("decl %%gs:%P0		\n\t"
 			  "jne 1f			\n\t"
 			  "call _kernel_preempt_check	\n\t"
 			  "1:"
@@ -321,7 +321,7 @@ enable_preemption_no_check(void)
 {
 	assert(get_preemption_level() > 0);
 
-	__asm__ volatile ("decl %%gs:%P0"
+	noasm ("decl %%gs:%P0"
 			: /* no outputs */
 			: "i" (offsetof(cpu_data_t, cpu_preemption_level))
 			: "cc", "memory");

@@ -296,7 +296,7 @@
 #else /* NOT ASSEMBLER */
 
 /* These defines are here for .c files that wish to reference global symbols
- * within __asm__ statements. 
+ * within noasm statements. 
  */
 #ifndef __NO_UNDERSCORES__
 #define CC_SYM_PREFIX "_"

@@ -366,7 +366,7 @@ vstart(vm_offset_t boot_args_start)
 	 */
 	if (is_boot_cpu)
 	{
-		asm volatile(
+		noasm(
 				"mov %1, %%rdi;"
 				"mov %0, %%rsp;"
 				"call _i386_init;"	: : "r" 
@@ -374,7 +374,7 @@ vstart(vm_offset_t boot_args_start)
 	}
 	else
 	{
-		asm volatile(
+		noasm(
 				"mov %0, %%rsp;"
 				"call _i386_init_slave;"	: : "r" 
 				(cpu_datap(cpu)->cpu_int_stack_top));

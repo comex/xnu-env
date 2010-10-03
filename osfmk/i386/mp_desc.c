@@ -668,7 +668,7 @@ cpu_desc_load(cpu_data_t *cdp)
 
 	set_tr(KERNEL_TSS);
 
-	__asm__ volatile("mov %0, %%gs" : : "rm" ((unsigned short)(CPU_DATA_GS)));
+	noasm("mov %0, %%gs" : : "rm" ((unsigned short)(CPU_DATA_GS)));
 }
 #endif /* __i386__ */
 
@@ -711,7 +711,7 @@ cpu_desc_load64(cpu_data_t *cdp)
 	/* Stuff the pre-cpu data area into the MSR and swapgs to activate */
 	wrmsr64(MSR_IA32_KERNEL_GS_BASE, (unsigned long)cdp);
 #if GPROF // Hack to enable mcount to work on K64
-	__asm__ volatile("mov %0, %%gs" : : "rm" ((unsigned short)(KERNEL_DS)));
+	noasm("mov %0, %%gs" : : "rm" ((unsigned short)(KERNEL_DS)));
 #endif
 	swapgs();
 

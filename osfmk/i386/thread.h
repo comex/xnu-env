@@ -247,9 +247,9 @@ current_stack_depth(void)
 	assert(get_preemption_level() > 0 || !ml_get_interrupts_enabled());
 
 #if defined(__x86_64__)
-       __asm__ volatile("mov %%rsp, %0" : "=m" (stack_ptr));
+       noasm("mov %%rsp, %0" : "=m" (stack_ptr));
 #else
-       __asm__ volatile("mov %%esp, %0" : "=m" (stack_ptr));
+       noasm("mov %%esp, %0" : "=m" (stack_ptr));
 #endif
 	return (current_cpu_datap()->cpu_kernel_stack
 		+ sizeof(struct x86_kernel_state)

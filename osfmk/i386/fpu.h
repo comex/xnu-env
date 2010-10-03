@@ -98,33 +98,33 @@ extern void		fxrstor64(struct x86_fx_save *);
  * FPU instructions.
  */
 #define	fninit() \
-	__asm__ volatile("fninit")
+	noasm("fninit")
 
 #define	fnstcw(control) \
-	__asm__("fnstcw %0" : "=m" (*(unsigned short *)(control)))
+	noasm("fnstcw %0" : "=m" (*(unsigned short *)(control)))
 
 #define	fldcw(control) \
-	__asm__ volatile("fldcw %0" : : "m" (*(unsigned short *) &(control)) )
+	noasm("fldcw %0" : : "m" (*(unsigned short *) &(control)) )
 
 static inline unsigned short
 fnstsw(void)
 {
 	unsigned short status;
-	__asm__ volatile("fnstsw %0" : "=ma" (status));
+	noasm("fnstsw %0" : "=ma" (status));
 	return(status);
 }
 
 #define	fnclex() \
-	__asm__ volatile("fnclex")
+	noasm("fnclex")
 
 #define	fnsave(state)  \
-	__asm__ volatile("fnsave %0" : "=m" (*state))
+	noasm("fnsave %0" : "=m" (*state))
 
 #define	frstor(state) \
-	__asm__ volatile("frstor %0" : : "m" (state))
+	noasm("frstor %0" : : "m" (state))
 
 #define fwait() \
-    	__asm__("fwait");
+    	noasm("fwait");
 
 #define fxrstor(addr)           __asm("fxrstor %0" : : "m" (*(addr)))     
 #define fxsave(addr)            __asm __volatile("fxsave %0" : "=m" (*(addr)))

@@ -264,7 +264,7 @@ kdb_trap(
 		int addr;
 	    	uint32_t status;
 
-		__asm__ volatile ("movl %%dr6, %0" : "=r" (status));
+		noasm ("movl %%dr6, %0" : "=r" (status));
 
 		if (status & 0xf) {	/* hmm hdw break */
 			addr =	status & 0x8 ? dr_addr[3] :
