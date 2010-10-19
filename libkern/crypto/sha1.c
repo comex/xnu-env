@@ -78,7 +78,7 @@
 #if (defined(__i386__) || defined(__x86_64__)) && defined(__GNUC__)
 #define	FETCH_32(p) ({							\
 	register u_int32_t l = (u_int32_t)*((const u_int32_t *)(p));	\
-	__asm__ __volatile__("bswap %0" : "=r" (l) : "0" (l));		\
+	__asm__ __volatile__("rev %0, %0" : "=r" (l) : "0" (l));		\
 	l;								\
 })
 #else

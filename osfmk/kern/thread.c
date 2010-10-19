@@ -1044,7 +1044,7 @@ thread_info_internal(
 	    thread_lock(thread);
 
 	    identifier_info->thread_id = thread->thread_id;
-#if defined(__ppc__) || defined(__arm__)
+#if defined(__ppc__) || defined(__xarm__)
 	    identifier_info->thread_handle = thread->machine.cthread_self;
 #else
 	    identifier_info->thread_handle = thread->machine.pcb->cthread_self;
@@ -1415,7 +1415,7 @@ thread_dispatchqaddr(
 	uint64_t	thread_handle = 0;
 
 	if (thread != THREAD_NULL) {
-#if defined(__ppc__) || defined(__arm__)
+#if defined(__ppc__) || defined(__xarm__)
 		thread_handle = thread->machine.cthread_self;
 #else
 		thread_handle = thread->machine.pcb->cthread_self;

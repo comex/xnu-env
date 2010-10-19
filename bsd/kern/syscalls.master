@@ -455,7 +455,7 @@
 302	AUE_NULL	ALL	{ uint32_t psynch_mutexdrop(user_addr_t mutex,  uint32_t mgen, uint32_t  ugen, uint64_t tid, uint32_t flags) NO_SYSCALL_STUB; }
 303	AUE_NULL	ALL	{ int psynch_cvbroad(user_addr_t cv, uint32_t cvgen, uint32_t diffgen, user_addr_t mutex,  uint32_t mgen, uint32_t ugen, uint64_t tid, uint32_t flags) NO_SYSCALL_STUB; }
 304	AUE_NULL	ALL	{ int psynch_cvsignal(user_addr_t cv, uint32_t cvgen, uint32_t cvugen, user_addr_t mutex,  uint32_t mgen, uint32_t ugen, int thread_port, uint32_t flags) NO_SYSCALL_STUB; }
-305	AUE_NULL	ALL	{ uint32_t psynch_cvwait(user_addr_t cv, uint32_t cvgen, uint32_t cvugen, user_addr_t mutex,  uint32_t mgen, uint32_t ugen, uint64_t sec, uint64_t usec) NO_SYSCALL_STUB; }
+305	AUE_NULL	ALL	{ int nosys(void); }
 306	AUE_NULL	ALL	{ uint32_t psynch_rw_rdlock(user_addr_t rwlock, uint32_t lgenval, uint32_t ugenval, uint32_t rw_wc, int flags)  NO_SYSCALL_STUB; }
 307	AUE_NULL	ALL	{ uint32_t psynch_rw_wrlock(user_addr_t rwlock, uint32_t lgenval, uint32_t ugenval, uint32_t rw_wc, int flags)  NO_SYSCALL_STUB; }
 308	AUE_NULL	ALL	{ uint32_t psynch_rw_unlock(user_addr_t rwlock, uint32_t lgenval, uint32_t ugenval, uint32_t rw_wc, int flags)  NO_SYSCALL_STUB; }

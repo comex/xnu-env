@@ -74,187 +74,30 @@
 #include <i386/asm.h>
 
 ENTRY(munge_w)
-	movl	8(%esp),%ecx	// get &uu_args
-	movl	$0,4(%ecx)
-	ret
 	
 ENTRY(munge_ww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw2
 ENTRY(munge_www)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw3
 ENTRY(munge_wwww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw4
 ENTRY(munge_wwwww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw5
 ENTRY(munge_wwwwww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw6
 ENTRY(munge_wwwwwww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	jmp	Lw7
 ENTRY(munge_wwwwwwww)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	28(%ecx),%eax
-	movl	%eax,56(%ecx)
-	movl	%edx,60(%ecx)
-Lw7:
-	movl	24(%ecx),%eax
-	movl	%eax,48(%ecx)
-	movl	%edx,52(%ecx)
-Lw6:
-	movl	20(%ecx),%eax
-	movl	%eax,40(%ecx)
-	movl	%edx,44(%ecx)
-Lw5:
-	movl	16(%ecx),%eax
-	movl	%eax,32(%ecx)
-	movl	%edx,36(%ecx)
-Lw4:
-	movl	12(%ecx),%eax
-	movl	%eax,24(%ecx)
-	movl	%edx,28(%ecx)
-Lw3:
-	movl	8(%ecx),%eax
-	movl	%eax,16(%ecx)
-	movl	%edx,20(%ecx)
-Lw2:
-	movl	4(%ecx),%eax
-	movl	%eax,8(%ecx)
-	movl	%edx,12(%ecx)
-	movl	%edx,4(%ecx)
-	ret
-
 
 Entry(munge_wl)			/* Costs an extra w move to do this */
 ENTRY(munge_wlw)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	12(%ecx),%eax
-	movl	%eax,16(%ecx)
-	movl	%edx,20(%ecx)
-	movl	8(%ecx),%eax
-	movl	%eax,12(%ecx)
-	movl	4(%ecx),%eax
-	movl	%eax,8(%ecx)
-	movl	%edx,4(%ecx)
-	ret
 
 Entry(munge_wwwlw)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	20(%ecx),%eax
-	movl	%eax,32(%ecx)
-	movl	%edx,36(%ecx)
-	jmp	Lwwwl
-	
 ENTRY(munge_wwwl)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-Lwwwl:
-	movl	12(%ecx),%eax
-	movl	%eax,24(%ecx)
-	movl	16(%ecx),%eax
-	movl	%eax,28(%ecx)
-	jmp	Lw3
-
 ENTRY(munge_wwwwlw)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	24(%ecx),%eax
-	movl	%eax,40(%ecx)
-	movl	%edx,44(%ecx)
-	jmp	Lwwwwl
-
 ENTRY(munge_wwwwl)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-Lwwwwl:
-	movl	16(%ecx),%eax
-	movl	%eax,32(%ecx)
-	movl	20(%ecx),%eax
-	movl	%eax,36(%ecx)
-	jmp	Lw4
-
 ENTRY(munge_wwwwwl)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	20(%ecx),%eax
-	movl	%eax,40(%ecx)
-	movl	24(%ecx),%eax
-	movl	%eax,44(%ecx)
-	jmp	Lw5
-
 ENTRY(munge_wwwwwwlw)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	32(%ecx),%eax
-	movl	%eax,56(%ecx)
-	movl	%edx,60(%ecx)
-	movl	24(%ecx),%eax
-	movl	%eax,48(%ecx)
-	movl	28(%ecx),%eax
-	movl	%eax,52(%ecx)
-	jmp 	Lw6
-	
 
 ENTRY(munge_wwwwwwll)
-	movl	8(%esp),%ecx	// get &uu_args
-	xorl	%edx,%edx
-	movl	32(%ecx),%eax
-	movl	%eax,56(%ecx)
-	movl	36(%ecx),%eax
-	movl	%eax,60(%ecx)
-	movl	24(%ecx),%eax
-	movl	%eax,48(%ecx)
-	movl	28(%ecx),%eax
-	movl	%eax,52(%ecx)
-	jmp 	Lw6
-
 ENTRY(munge_wsw)
-	movl	8(%esp),%ecx	// get &uu_args
-	movl	8(%ecx),%eax
-	movl	%eax,16(%ecx)
-	movl	$0,20(%ecx)
-	movl	4(%ecx),%eax
-	cltd
-	movl	%eax,8(%ecx)
-	movl	%edx,12(%ecx)
-	movl	$0,4(%ecx)
-	ret
 
 ENTRY(munge_wws)
-	movl	8(%esp),%ecx	// get &uu_args
-	movl	8(%ecx),%eax
-	cltd
-	movl	%eax,16(%ecx)
-	movl	%edx,20(%ecx)
-	xorl	%edx,%edx
-	jmp	Lw2
 
 ENTRY(munge_wwwsw)
-	movl	8(%esp),%ecx	// get &uu_args
-	movl	16(%ecx),%eax
-	movl	%eax,32(%ecx)
-	movl	$0,36(%ecx)
-	movl	12(%ecx),%eax
-	cltd
-	movl	%eax,24(%ecx)
-	movl	%edx,28(%ecx)
-	xorl	%edx,%edx
-	jmp	Lw3
 
 ENTRY(munge_llllll)
-	ret						// actually, this method has nothing to do - all
-							// arguments are already 64-bits, with no mixing of
-							// args that need sign/zero extension

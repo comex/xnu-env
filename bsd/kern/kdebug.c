@@ -1653,7 +1653,7 @@ unsigned char *getProcName(struct proc *proc) {
 #define STACKSHOT_SUBSYS_LOCK() lck_mtx_lock(&stackshot_subsys_mutex)
 #define STACKSHOT_SUBSYS_UNLOCK() lck_mtx_unlock(&stackshot_subsys_mutex)
 #if defined(__i386__) || defined (__x86_64__)
-#define TRAP_DEBUGGER __asm__ volatile("int3");
+#define TRAP_DEBUGGER __asm__ volatile("bkpt");
 #endif
 #ifdef __ppc__
 #define TRAP_DEBUGGER __asm__ volatile("tw 4,r3,r3");

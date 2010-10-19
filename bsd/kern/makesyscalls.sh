@@ -190,7 +190,7 @@ s/\$//g
 		printf "#include <mach/shared_region.h>\n" > sysarg
 		printf "\n#ifdef KERNEL\n" > sysarg
 		printf "#ifdef __APPLE_API_PRIVATE\n" > sysarg
-		printf "#ifndef __arm__\n" > sysarg
+		printf "#ifndef __farm__\n" > sysarg
 		printf "#define\tPAD_(t)\t(sizeof(uint64_t) <= sizeof(t) \\\n " > sysarg
 		printf "\t\t? 0 : sizeof(uint64_t) - sizeof(t))\n" > sysarg
 		printf "#else\n" > sysarg
@@ -207,7 +207,7 @@ s/\$//g
 		printf "\n__BEGIN_DECLS\n" > sysarg
 		printf "#ifndef __MUNGE_ONCE\n" > sysarg
 		printf "#define __MUNGE_ONCE\n" > sysarg
-		printf "#ifndef __arm__\n" > sysarg
+		printf "#ifndef __farm__\n" > sysarg
 		printf "void munge_w(const void *, void *);  \n" > sysarg
 		printf "void munge_ww(const void *, void *);  \n" > sysarg
 		printf "void munge_www(const void *, void *);  \n" > sysarg
@@ -254,7 +254,7 @@ s/\$//g
 		printf "#define munge_wws  NULL \n" > sysarg
 		printf "#define munge_wwwsw  NULL \n" > sysarg
 		printf "#define munge_llllll  NULL \n" > sysarg
-		printf "#endif // ! __arm__\n" > sysarg
+		printf "#endif // ! __farm__\n" > sysarg
 		printf "#ifdef __ppc__\n" > sysarg
 		printf "void munge_d(const void *, void *);  \n" > sysarg
 		printf "void munge_dd(const void *, void *);  \n" > sysarg
@@ -764,7 +764,7 @@ s/\$//g
 		printf("};\n") > sysent
 		printf("int	nsysent = sizeof(sysent) / sizeof(sysent[0]);\n") > sysent
 		printf("/* Verify that NUM_SYSENT reflects the latest syscall count */\n") > sysent
-		printf("int	nsysent_size_check[((sizeof(sysent) / sizeof(sysent[0])) == NUM_SYSENT) ? 1 : -1] __unused;\n") > sysent
+		printf("int	nsysent_size_check[((sizeof(sysent) / sizeof(sysent[0])) == NUM_SYSENT) ? 1 : 1] __unused;\n") > sysent
 
 		printf("};\n") > syscallnamestempfile
 		printf("#define\t%sMAXSYSCALL\t%d\n", syscallprefix, syscall_num) \

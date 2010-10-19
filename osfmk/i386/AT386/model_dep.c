@@ -841,7 +841,7 @@ Debugger(
 		}
         }
 
-	__asm__("int3");
+	__asm__("bkpt");
 	hw_atomic_sub(&debug_mode, 1);   
 }
 

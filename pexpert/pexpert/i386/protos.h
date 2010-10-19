@@ -43,22 +43,12 @@ typedef unsigned short   i386_ioport_t;
 static __inline__ unsigned u \
 in##s(i386_ioport_t port) \
 { \
-    unsigned u data; \
-    asm volatile ( \
-        "in" #s " %1,%0" \
-        : "=a" (data) \
-        : "d" (port)); \
-    return (data); \
 }
 
 #define __OUT(s, u) \
 static __inline__ void \
 out##s(i386_ioport_t port, unsigned u data) \
 { \
-    asm volatile ( \
-        "out" #s " %1,%0" \
-        : \
-        : "d" (port), "a" (data)); \
 }
 
 __IN(b, char)

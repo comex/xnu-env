@@ -101,89 +101,20 @@
 #define ARGS10_EXTENT	10	
 
 #define DTRACE_CALL0ARGS(provider, name)							\
-	asm volatile (										\
-		      DTRACE_CALL(provider, name)						\
-	);
 
 #define DTRACE_CALL1ARG(provider, name)								\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi"								\
-	);
 
 #define DTRACE_CALL2ARGS(provider, name)							\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi"							\
-	);
 
 #define DTRACE_CALL3ARGS(provider, name)							\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-	              "movq\t0x10(%0),%%rdx"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi", "rdx"						\
-	);
 
 #define DTRACE_CALL4ARGS(provider, name)							\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-	              "movq\t0x10(%0),%%rdx"						"\n\t"	\
-	              "movq\t0x18(%0),%%rcx"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi", "rdx", "rcx"					\
-	);
 
 #define DTRACE_CALL5ARGS(provider, name)							\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-	              "movq\t0x10(%0),%%rdx"						"\n\t"	\
-	              "movq\t0x18(%0),%%rcx"						"\n\t"	\
-	              "movq\t0x20(%0),%%r8"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi", "rdx", "rcx", "r8"				\
-	);
 
 #define DTRACE_CALL6ARGS(provider, name)							\
-	asm volatile ("movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-	              "movq\t0x10(%0),%%rdx"						"\n\t"	\
-	              "movq\t0x18(%0),%%rcx"						"\n\t"	\
-	              "movq\t0x20(%0),%%r8"						"\n\t"	\
-	              "movq\t0x28(%0),%%r9"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi", "rdx", "rcx", "r8", "r9"			\
-	);
 
 #define DTRACE_CALL7ARGS(provider, name)							\
-	asm volatile ("subq\t$0x8,%%rsp"						"\n\t"	\
-	              "movq\t0x0(%0),%%rdi"						"\n\t"	\
-	              "movq\t0x8(%0),%%rsi"						"\n\t"	\
-	              "movq\t0x10(%0),%%rdx"						"\n\t"	\
-	              "movq\t0x18(%0),%%rcx"						"\n\t"	\
-	              "movq\t0x20(%0),%%r8"						"\n\t"	\
-	              "movq\t0x28(%0),%%r9"						"\n\t"	\
-	              "movq\t0x30(%0),%%rax"						"\n\t"	\
-	              "movq\t%%rax,0x0(%%rsp)"						"\n\t"	\
-		      DTRACE_CALL(provider, name)						\
-	              "addq\t$0x8,%%rsp"						"\n\t"	\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "rdi", "rsi", "rdx", "rcx", "r8", "r9", "rax"			\
-	);
 
 #endif // __x86_64__
 
@@ -191,10 +122,10 @@
 
 #define DTRACE_NOPS			\
 	"nop"			"\n\t"	\
-	"leal 0(%%esi), %%esi"	"\n\t"	
+	"mov r0, r0" "\n\t" \
 
 #define DTRACE_CALL_INSN(p,n)						\
-	"call _dtracetest" DTRACE_STRINGIFY(_##p##_##n)	"\n\t"
+	"blx _dtracetest" DTRACE_STRINGIFY(_##p##_##n)	"\n\t"
 
 #define ARG1_EXTENT	1
 #define ARGS2_EXTENT	2
@@ -227,212 +158,26 @@
  */
 
 #define DTRACE_CALL0ARGS(provider, name)							\
-	asm volatile (										\
-	              DTRACE_CALL(provider, name)						\
-	              "# eat trailing nl +tabfrom DTRACE_CALL"					\
-	              :										\
-	              :										\
-	);
 
 #define DTRACE_CALL1ARG(provider, name)								\
-	asm volatile ("subl\t$0x10,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x10,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)		       					\
-	              : "memory", "eax"								\
-	);
 
 #define DTRACE_CALL2ARGS(provider, name)							\
-	asm volatile ("subl\t$0x10,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x10,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"							\
-	);
 
 #define DTRACE_CALL3ARGS(provider, name)							\
-	asm volatile ("subl\t$0x10,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x10,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"							\
-	);
 
 #define DTRACE_CALL4ARGS(provider, name)							\
-	asm volatile ("subl\t$0x10,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x10,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL5ARGS(provider, name)							\
-	asm volatile ("subl\t$0x20,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x20,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL6ARGS(provider, name)							\
-	asm volatile ("subl\t$0x20,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-		      "movl\t0x14(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x14(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x20,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL7ARGS(provider, name)							\
-	asm volatile ("subl\t$0x20,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-		      "movl\t0x14(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x14(%%esp)"						"\n\t"	\
-	              "movl\t0x18(%0),%%eax"						"\n\t"	\
-	              "movl\t%%eax,0x18(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x20,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL8ARGS(provider, name)							\
-	asm volatile ("subl\t$0x20,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-		      "movl\t0x14(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x14(%%esp)"						"\n\t"	\
-	              "movl\t0x18(%0),%%eax"						"\n\t"	\
-		      "movl\t0x1C(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x18(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x1C(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x20,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL9ARGS(provider, name)							\
-	asm volatile ("subl\t$0x30,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-		      "movl\t0x14(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x14(%%esp)"						"\n\t"	\
-	              "movl\t0x18(%0),%%eax"						"\n\t"	\
-		      "movl\t0x1C(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x18(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x1C(%%esp)"						"\n\t"	\
-	              "movl\t0x20(%0),%%eax"						"\n\t"	\
-	              "movl\t%%eax,0x20(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x30,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #define DTRACE_CALL10ARGS(provider, name)							\
-	asm volatile ("subl\t$0x30,%%esp"						"\n\t"	\
-	              "movl\t0x0(%0),%%eax"						"\n\t"	\
-		      "movl\t0x4(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x0(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x4(%%esp)"						"\n\t"	\
-	              "movl\t0x8(%0),%%eax"						"\n\t"	\
-		      "movl\t0xC(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x8(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0xC(%%esp)"						"\n\t"	\
-	              "movl\t0x10(%0),%%eax"						"\n\t"	\
-		      "movl\t0x14(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x10(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x14(%%esp)"						"\n\t"	\
-	              "movl\t0x18(%0),%%eax"						"\n\t"	\
-		      "movl\t0x1C(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x18(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x1C(%%esp)"						"\n\t"	\
-	              "movl\t0x20(%0),%%eax"						"\n\t"	\
-		      "movl\t0x24(%0),%%edx"						"\n\t"	\
-	              "movl\t%%eax,0x20(%%esp)"						"\n\t"	\
-	              "movl\t%%edx,0x24(%%esp)"						"\n\t"	\
-	              DTRACE_CALL(provider, name)						\
-                      "addl\t$0x30,%%esp"							\
-	              :										\
-	              : "r" (__dtrace_args)							\
-	              : "memory", "eax", "edx"	       						\
-	);
 
 #endif // __i386__
 

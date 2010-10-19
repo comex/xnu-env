@@ -234,16 +234,6 @@ static void cpuid_fn(uint32_t selector, uint32_t *result)
 #else
 static void cpuid_fn(uint32_t selector, uint32_t *result)
 {
-	if (cpu_mode_is64bit()) {
-	       asm("call _cpuid64"
-			: "=a" (result[0]),
-			  "=b" (result[1]),
-			  "=c" (result[2]),
-			  "=d" (result[3])
-			: "a"(selector));
-	} else {
-		do_cpuid(selector, result);
-	}
 }
 #endif
 

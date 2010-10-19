@@ -126,8 +126,8 @@ fnstsw(void)
 #define fwait() \
     	noasm("fwait");
 
-#define fxrstor(addr)           __asm("fxrstor %0" : : "m" (*(addr)))     
-#define fxsave(addr)            __asm __volatile("fxsave %0" : "=m" (*(addr)))
+#define fxrstor(addr)          
+#define fxsave(addr)            
 
 #define FXSAFE() (fp_kind == FP_FXSR)
 

@@ -1059,6 +1059,7 @@ out:
 int
 psynch_cvwait(__unused proc_t p, struct psynch_cvwait_args * uap, uint32_t * retval)
 {
+#if 0
 	user_addr_t cond  = uap->cv;
 	uint32_t cgen = uap->cvgen;
 	uint32_t cugen = uap->cvugen;
@@ -1166,6 +1167,7 @@ out:
 #endif /* _PSYNCH_TRACE_ */
 	ksyn_wqrelease(ckwq, NULL);
 	return(error);
+#endif
 }
 
 /* ***************** pthread_rwlock ************************ */

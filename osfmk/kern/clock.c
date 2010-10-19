@@ -42,7 +42,6 @@
 
 #include <IOKit/IOPlatformExpert.h>
 
-#include <machine/commpage.h>
 
 #include <mach/mach_traps.h>
 #include <mach/mach_time.h>
@@ -338,7 +337,6 @@ clock_gettimeofday(
 	now = mach_absolute_time();
 
 	if (clock_calend.adjdelta >= 0) {
-		clock_gettimeofday_set_commpage(now, clock_calend.epoch, clock_calend.offset, secs, microsecs);
 	}
 	else {
 		uint32_t	t32;
@@ -390,7 +388,6 @@ clock_set_calendar_microtime(
 	s = splclock();
 	clock_lock();
 
-	commpage_disable_timestamp();
 
 	/*
 	 *	Calculate the new calendar epoch based on
@@ -453,7 +450,6 @@ clock_initialize_calendar(void)
 	s = splclock();
 	clock_lock();
 
-	commpage_disable_timestamp();
 
 	if ((long)secs >= (long)clock_boottime) {
 		/*
@@ -560,7 +556,6 @@ calend_set_adjustment(
 
 	total = (int64_t)*secs * NSEC_PER_SEC + *microsecs * NSEC_PER_USEC;
 
-	commpage_disable_timestamp();
 
 	now = mach_absolute_time();
 
@@ -643,7 +638,6 @@ calend_adjust(void)
 	int32_t			delta;
 	uint32_t		interval = 0;
 
-	commpage_disable_timestamp();
 
 	now = mach_absolute_time();
 

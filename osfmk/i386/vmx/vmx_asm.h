@@ -40,51 +40,13 @@
 #define VMX_SUCCEED			0
 
 static inline void enter_64bit_mode(void) {
-	__asm__ __volatile__ (
-		".byte   0xea    /* far jump longmode */	\n\t"
-		".long   1f					\n\t"
-		".word   %P0					\n\t"
-		".code64					\n\t"
-		"1:"
-		:: "i" (KERNEL64_CS)
-	);
 }
 static inline void enter_compat_mode(void) {
-	asm(
-		"ljmp    *4f					\n\t"
-	"4:							\n\t"
-		".long   5f					\n\t"
-		".word   %P0					\n\t"
-		".code32					\n\t"
-	"5:"
-		:: "i" (KERNEL32_CS)
-	);
 }
 
 #define __VMXOFF(res)						\
-	__asm__ __volatile__ (					\
-		"vmxoff		\n\t"				\
-		"cmovcl %2, %0	\n\t"	/* CF = 1, ZF = 0 */	\
-		"cmovzl %3, %0"		/* CF = 0, ZF = 1 */	\
-		: "=&r" (res)				\
-		: "0" (VMX_SUCCEED),				\
-		  "r" (VMX_FAIL_INVALID),			\
-		  "r" (VMX_FAIL_VALID)				\
-		: "memory", "cc"				\
-	)
 
 #define __VMXON(addr, res)					\
-	__asm__ __volatile__ (					\
-		"vmxon %4	\n\t"				\
-		"cmovcl %2, %0	\n\t"	/* CF = 1, ZF = 0 */	\
-		"cmovzl %3, %0"		/* CF = 0, ZF = 1 */	\
-		: "=&r" (res)					\
-		: "0" (VMX_SUCCEED),				\
-		  "r" (VMX_FAIL_INVALID),			\
-		  "r" (VMX_FAIL_VALID),				\
-		  "m" (*addr)					\
-		: "memory", "cc"				\
-	);
 
 
 /*

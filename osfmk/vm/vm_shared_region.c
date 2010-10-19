@@ -1477,10 +1477,7 @@ post_sys_powersource_internal(int i, int internal)
 		__system_power_source = i;
 
 	if (__commpage_setup != 0) {
-		if (__system_power_source != 0)
 			commpage_set_spin_count(0);
-		else
-			commpage_set_spin_count(MP_SPIN_TRIES);
 	}
 }
 #endif /* __i386__ || __x86_64__ */

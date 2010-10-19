@@ -282,7 +282,6 @@ kdp_panic(
 )
 {
     kprintf("kdp panic: %s\n", msg);    
-    __asm__ volatile("hlt");	
 }
 
 
@@ -343,7 +342,6 @@ kdp_sync_cache(void)
 void
 kdp_call(void)
 {
-	__asm__ volatile ("int	$3");	/* Let the processor do the work */
 }
 
 
@@ -694,5 +692,4 @@ kdp_callouts(kdp_event_t event)
 void
 kdp_ml_enter_debugger(void)
 {
-	__asm__ __volatile__("int3");
 }

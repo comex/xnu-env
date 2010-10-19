@@ -99,13 +99,11 @@ dtrace_probe_error(dtrace_state_t *state, dtrace_epid_t epid, int which,
 void
 dtrace_membar_producer(void)
 {
-	__asm__ volatile("sfence");
 }
 
 void
 dtrace_membar_consumer(void)
 {
-	__asm__ volatile("lfence");
 }
 
 /*

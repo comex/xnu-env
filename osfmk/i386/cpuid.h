@@ -153,25 +153,10 @@ typedef enum { eax, ebx, ecx, edx } cpuid_register_t;
 static inline void
 cpuid(uint32_t *data)
 {
-	asm("cpuid"
-		: "=a" (data[eax]),
-		  "=b" (data[ebx]),
-		  "=c" (data[ecx]),
-		  "=d" (data[edx])
-		: "a"  (data[eax]),
-		  "b"  (data[ebx]),
-		  "c"  (data[ecx]),
-		  "d"  (data[edx]));
 }
 static inline void
 do_cpuid(uint32_t selector, uint32_t *data)
 {
-	asm("cpuid"
-		: "=a" (data[0]),
-		  "=b" (data[1]),
-		  "=c" (data[2]),
-		  "=d" (data[3])
-		: "a"(selector));
 }
 
 /*

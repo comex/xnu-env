@@ -598,7 +598,7 @@ fill_taskthreadinfo(task_t task, uint64_t thaddr, struct proc_threadinfo_interna
 
 	for (thact  = (thread_t)queue_first(&task->threads);
 			!queue_end(&task->threads, (queue_entry_t)thact); ) {
-#if defined(__ppc__) || defined(__arm__)
+#if defined(__ppc__) || defined(__farm__)
 		if (thact->machine.cthread_self == thaddr)
 #elif defined (__i386__) || defined (__x86_64__)
 		if (thact->machine.pcb->cthread_self == thaddr)
@@ -658,7 +658,7 @@ fill_taskthreadlist(task_t task, void * buffer, int thcount)
 
 	for (thact  = (thread_t)queue_first(&task->threads);
 			!queue_end(&task->threads, (queue_entry_t)thact); ) {
-#if defined(__ppc__) || defined(__arm__)
+#if defined(__ppc__) || defined(__farm__)
 		thaddr = thact->machine.cthread_self;
 #elif defined (__i386__) || defined (__x86_64__)
 		thaddr = thact->machine.pcb->cthread_self;
