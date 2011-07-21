@@ -126,7 +126,7 @@ build_installhdrs_md: $(BUILD_INSTALLHDRS_MD_SUBDIRS_TARGETS)
 #
 # Install kernel header files
 #
-exporthdrs: exporthdrs_mi exporthdrs_md 
+exporthdrs: # exporthdrs_mi exporthdrs_md 
 
 #
 # Install header files order

@@ -63,22 +63,6 @@ LEXT(_rtc_nanotime_store)
 	.align	FALIGN
 
 LEXT(_rtc_nanotime_adjust)
-	mov	12(%esp),%edx			/* ptr to rtc_nanotime_info */
-	
-	movl	RNT_GENERATION(%edx),%ecx	/* get current generation */
-	movl	$0,RNT_GENERATION(%edx)		/* flag data as being updated */
-
-	movl	4(%esp),%eax			/* get lower 32-bits of delta */
-	addl	%eax,RNT_TSC_BASE(%edx)
-	adcl	$0,RNT_TSC_BASE+4(%edx)		/* propagate carry */
-
-	incl	%ecx				/* next generation */
-	jnz	1f
-	incl	%ecx				/* skip 0, which is a flag */
-1:	movl	%ecx,RNT_GENERATION(%edx)	/* update generation and make usable */
-
-	ret
-
 
 /* unint64_t _rtc_nanotime_read( rtc_nanotime_t *rntp, int slow );
  *

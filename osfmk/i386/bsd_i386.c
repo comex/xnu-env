@@ -72,7 +72,7 @@
 #ifdef MACH_BSD
 extern void	mach_kauth_cred_uthread_update(void);
 #endif
-
+/*
 kern_return_t
 thread_userstack(
     thread_t,
@@ -91,6 +91,7 @@ thread_entrypoint(
     unsigned int,
     mach_vm_offset_t *
 ); 
+*/
 
 void * find_user_regs(thread_t);
 

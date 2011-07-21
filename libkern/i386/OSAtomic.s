@@ -35,14 +35,7 @@
 
 _OSCompareAndSwap:
 _OSCompareAndSwapPtr:
-	movl		 4(%esp), %eax	#; oldValue
-	movl		 8(%esp), %edx	#; newValue
-	movl		12(%esp), %ecx	#; ptr
-	lock
-	cmpxchgl	%edx, 0(%ecx)	#; CAS (eax is an implicit operand)
-	sete		%al			#; did CAS succeed? (TZ=1)
-	movzbl		%al, %eax		#; clear out the high bytes
-	ret
+	bx lr
 
 #;*****************************************************************************
 #;* Boolean OSCompareAndSwap64(SInt64 oldValue, SInt64 newValue, SInt64 *ptr) *
@@ -51,22 +44,7 @@ _OSCompareAndSwapPtr:
 	.globl _OSCompareAndSwap64
 
 _OSCompareAndSwap64:
-	pushl		%edi
-	pushl		%ebx
-
-	movl		 4+8(%esp), %eax	#; low 32-bits of oldValue
-	movl		 8+8(%esp), %edx	#; high 32-bits of oldValue
-	movl		12+8(%esp), %ebx	#; low 32-bits of newValue
-	movl		16+8(%esp), %ecx	#; high 32-bits of newValue
-	movl		20+8(%esp), %edi	#; ptr
-	lock
-	cmpxchg8b	0(%edi)		#; CAS (eax:edx, ebx:ecx implicit)
-	sete		%al			#; did CAS succeed? (TZ=1)
-	movzbl		%al, %eax		#; clear out the high bytes
-
-	popl		%ebx
-	popl		%edi
-	ret
+    bx lr
 
 #;*******************************************************
 #;* SInt64 OSAddAtomic64(SInt64 theAmount, SInt64 *ptr) *
@@ -74,24 +52,7 @@ _OSCompareAndSwap64:
 
 	.globl	_OSAddAtomic64
 _OSAddAtomic64:
-	pushl		%edi
-	pushl		%ebx
-
-	movl		12+8(%esp), %edi	#; ptr
-	movl		0(%edi), %eax		#; load low 32-bits of *ptr
-	movl		4(%edi), %edx		#; load high 32-bits of *ptr
-1:
-	movl		%eax, %ebx		
-	movl		%edx, %ecx		#; ebx:ecx := *ptr
-	addl		4+8(%esp), %ebx
-	adcl		8+8(%esp), %ecx		#; ebx:ecx := *ptr + theAmount
-	lock
-	cmpxchg8b	0(%edi)		#; CAS (eax:edx, ebx:ecx implicit)
-	jnz		1b		#; - failure: eax:edx re-loaded, retry
-					#; - success: old value in eax:edx
-	popl		%ebx
-	popl		%edi
-	ret
+    bx lr
 
 #;*******************************************************
 #; SInt32 OSAddAtomic(SInt32 delta, SInt32 *address) 
@@ -101,8 +62,4 @@ _OSAddAtomic64:
 	.globl	_OSAddAtomicLong
 _OSAddAtomic:
 _OSAddAtomicLong:
-	movl	4(%esp), %eax		#; Load addend
-	movl	8(%esp), %ecx		#; Load address of operand
-	lock
-	xaddl	%eax, 0(%ecx)		#; Atomic exchange and add
-	ret
+    bx lr

@@ -116,8 +116,10 @@ struct mount {
 	uint32_t		mnt_flag;		/* flags */
 	uint32_t		mnt_kern_flag;		/* kernel only flags */
 	uint32_t		mnt_lflag;			/* mount life cycle flags */
+    uint32_t        mnt_compound_ops;
 	uint32_t		mnt_maxsymlinklen;	/* max size of short symlink */
 	struct vfsstatfs	mnt_vfsstat;		/* cache of filesystem stats */
+    // the rest of this struct is wrong too
 	qaddr_t		mnt_data;		/* private data */
 	/* Cached values of the IO constraints for the device */
 	uint32_t	mnt_maxreadcnt;		/* Max. byte count for read */

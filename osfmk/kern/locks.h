@@ -286,12 +286,8 @@ extern void				lck_mtx_init(
 extern void				lck_mtx_lock(
 									lck_mtx_t		*lck);
 
-#if	defined(__i386__)
-extern void	lck_mtx_unlock(lck_mtx_t		*lck) __DARWIN10_ALIAS(lck_mtx_unlock);
-#else
 extern void				lck_mtx_unlock(
 									lck_mtx_t		*lck);
-#endif	/* __i386__ */
 extern void				lck_mtx_destroy(
 									lck_mtx_t		*lck,
 									lck_grp_t		*grp);

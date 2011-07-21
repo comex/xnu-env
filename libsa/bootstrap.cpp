@@ -237,7 +237,7 @@ KLDBootstrap::readPrelinkedExtensions(
     void                      * prelinkData             = NULL;  // see code
     void                      * prelinkCopy             = NULL;  // see code
     vm_size_t                   prelinkLength           = 0;
-#if !__LP64__ && !defined(__arm__)
+#if !__LP64__// && !defined(__arm__)
     vm_map_offset_t             prelinkDataMapOffset    = 0;
 #endif
 

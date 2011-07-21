@@ -1990,7 +1990,7 @@ fseventsf_ioctl(struct fileproc *fp, u_long cmd, caddr_t data, vfs_context_t ctx
 		break;
 	}
 
-	case OLD_FSEVENTS_DEVICE_FILTER:
+	//case OLD_FSEVENTS_DEVICE_FILTER:
 	case NEW_FSEVENTS_DEVICE_FILTER: {
 	    int new_num_devices;
 	    dev_t *devices_not_to_watch, *tmp=NULL;
